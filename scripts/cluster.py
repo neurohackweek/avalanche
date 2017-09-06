@@ -1,6 +1,7 @@
 # Detects clusters after Point Processing a Brain 
 def cluster_detection(in_file):
-
+    
+    # Imports
     import numpy as np
     import os
     import nibabel as nb
