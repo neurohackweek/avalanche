@@ -17,59 +17,49 @@ if _version_extra:
 
 __version__ = '.'.join(map(str, _ver))
 
-CLASSIFIERS = ["Development Status :: 3 - Alpha",
+CLASSIFIERS = ["Development Status :: 0.0.1",
                "Environment :: Console",
                "Intended Audience :: Science/Research",
-               "License :: OSI Approved :: MIT License",
+               "License :: OSI Approved :: Apache 2.o License",
                "Operating System :: OS Independent",
                "Programming Language :: Python",
                "Topic :: Scientific/Engineering"]
 
 # Description should be a one-liner:
-description = "shablona: a template for small scientific Python projects"
+description = "avalanche: A project to generate avalanches from fMRI"
 # Long description will go up on the pypi page
 long_description = """
 
-Shablona
+avalanche
 ========
-Shablona is a template project for small scientific Python projects.
 
-It contains software implementations of an analysis of some simple data, but
-more importantly, it contains infrastructure for testing, documentation,
-continuous integration and deployment, which can be easily adapted
-to use in other projects.
-
-To get started using these components in your own software, please go to the
-repository README_.
-
-.. _README: https://github.com/uwescience/shablona/blob/master/README.md
+Not today
 
 License
 =======
-``shablona`` is licensed under the terms of the MIT license. See the file
+``avalanche`` is licensed under the terms of the Apache 2.0 license. See the file
 "LICENSE" for information on the history of this software, terms & conditions
 for usage, and a DISCLAIMER OF ALL WARRANTIES.
 
 All trademarks referenced herein are property of their respective holders.
 
-Copyright (c) 2015--, Ariel Rokem, The University of Washington
-eScience Institute.
+Copyright (c) 2017 -- Neurohackweek'17 Avalanche team
 """
 
-NAME = "shablona"
-MAINTAINER = "Ariel Rokem"
+NAME = "avalanche"
+MAINTAINER = "Avalanche team"
 MAINTAINER_EMAIL = "arokem@gmail.com"
 DESCRIPTION = description
 LONG_DESCRIPTION = long_description
-URL = "http://github.com/uwescience/shablona"
+URL = "http://github.com/neurohackweek/avalanche"
 DOWNLOAD_URL = ""
-LICENSE = "MIT"
-AUTHOR = "Ariel Rokem"
+LICENSE = "Apache 2.0"
+AUTHOR = "Avalanche team"
 AUTHOR_EMAIL = "arokem@gmail.com"
 PLATFORMS = "OS Independent"
 MAJOR = _version_major
 MINOR = _version_minor
 MICRO = _version_micro
 VERSION = __version__
-PACKAGE_DATA = {'shablona': [pjoin('data', '*')]}
-REQUIRES = ["numpy"]
+PACKAGE_DATA = {'avalanche': [pjoin('data', '*')]}
+REQUIRES = ["numpy", "scipy"]
