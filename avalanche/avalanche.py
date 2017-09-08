@@ -107,3 +107,11 @@ def avalanche(func_filename):
     # Reconstruct the 4D volume
     pp_file = os.path.join(os.getcwd(), 'binary_pp.nii.gz')
     img_new.to_filename(pp_file)
+
+    Nvoxels = np.unique(labeled_array, return_counts='true')
+    Nvoxels = np.asarray(Nvoxels).T
+    #get rid of the 0 count (these aren't avalanches)
+    Nvoxels = Nvoxels[1:]
+    
+    #could return num_features, Nvoxels
+    
