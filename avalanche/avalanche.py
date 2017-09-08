@@ -24,17 +24,19 @@ def avalanche(func_filename):
     #we need to make a mask, otherwise avalanches could happen outside the brain!
     mask_img = compute_epi_mask(func_filename)
     masked_data = apply_mask(func_filename, mask_img)
-    data = unmask(masked_data, mask_img).get_data()
     
-    # Visualize it as an ROI - just for testing
-    from nilearn.plotting import plot_roi
-    plot_roi(mask_img)
+#    # Visualize it as an ROI - just for testing
+#    from nilearn.plotting import plot_roi
+#    plot_roi(mask_img)
     
-    signal = zscore(data, axis=3)
+    signal = zscore(masked_data, axis=0)
     signal[signal>1] = 1
     signal[signal<1]=0
     #nans are getting added to cluster 1 by label function, so set to 0
     signal[np.isnan(signal)] = 0
+    
+    #put the binary signal data back into 4D space:
+    signal = unmask(signal, mask_img).get_data()
     
     #This is the avalanche identification step, which requires a 
     #structure to define the spatio(x-y-z)-temporal connectivity:
@@ -80,7 +82,7 @@ def avalanche(func_filename):
     #and we want to regenerate our labels:
     labeled_array, num_features = label(labeled_array, struct_44)
     
-    img_new = nb.Nifti1Image(labeled_array, header=img.get_header(), affine=img.get_affine())
+    img_new = nb.Nifti1Image(labeled_array, header=img.header, affine=img.affine)
     # Reconstruct the 4D volume
     ava_file = os.path.join(os.getcwd(), 'avalancheLabels.nii.gz')
     img_new.to_filename(ava_file)
@@ -101,7 +103,7 @@ def avalanche(func_filename):
     #the onset array is back in the same time order and number of time points
     #as the original arrays...
     
-    img_new = nb.Nifti1Image(onset_array, header=img.get_header(), affine=img.get_affine())
+    img_new = nb.Nifti1Image(onset_array, header=img.header, affine=img.affine
     # Reconstruct the 4D volume
     pp_file = os.path.join(os.getcwd(), 'binary_pp.nii.gz')
     img_new.to_filename(pp_file)
