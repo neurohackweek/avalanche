@@ -16,7 +16,7 @@ from nilearn.masking import apply_mask
 from nilearn.masking import unmask
 from scipy.ndimage.morphology import generate_binary_structure
 
-def avalanche(func_filename):
+def avalanche(func_filename, th, structure_dim):
     #need to get func_filename (a nii file) as input
     img = nb.load(func_filename)
     data = img.get_data()
@@ -30,8 +30,8 @@ def avalanche(func_filename):
 #    plot_roi(mask_img)
     
     signal = zscore(masked_data, axis=0)
-    signal[signal>1] = 1
-    signal[signal<1]=0
+    signal[signal>th] = 1
+    signal[signal<th] = 0
     #nans are getting added to cluster 1 by label function, so set to 0
     signal[np.isnan(signal)] = 0
     
@@ -40,8 +40,8 @@ def avalanche(func_filename):
     
     #This is the avalanche identification step, which requires a 
     #structure to define the spatio(x-y-z)-temporal connectivity:
-    struct_44 = generate_binary_structure(4,4)
-    labeled_array, num_features = label(signal, struct_44)
+    struct = generate_binary_structure(structure_dim, structure_dim)
+    labeled_array, num_features = label(signal, struct)
     
     #get the size of the array:
     (n_x, n_y, n_z, n_t) = labeled_array.shape
@@ -107,3 +107,11 @@ def avalanche(func_filename):
     # Reconstruct the 4D volume
     pp_file = os.path.join(os.getcwd(), 'binary_pp.nii.gz')
     img_new.to_filename(pp_file)
+
+    Nvoxels = np.unique(labeled_array, return_counts='true')
+    Nvoxels = np.asarray(Nvoxels).T
+    #get rid of the 0 count (these aren't avalanches)
+    Nvoxels = Nvoxels[1:]
+    
+    #could return num_features, Nvoxels
+    
