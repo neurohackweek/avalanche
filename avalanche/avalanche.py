@@ -30,8 +30,9 @@ def avalanche(func_filename):
 #    plot_roi(mask_img)
     
     signal = zscore(masked_data, axis=0)
-    signal[signal>1] = 1
-    signal[signal<1]=0
+    
+    signal[signal<2]=0
+    signal[signal>2]=1
     #nans are getting added to cluster 1 by label function, so set to 0
     signal[np.isnan(signal)] = 0
     
@@ -108,8 +109,7 @@ def avalanche(func_filename):
     pp_file = os.path.join(os.getcwd(), 'binary_pp.nii.gz')
     img_new.to_filename(pp_file)
 
-    Nvoxels = np.unique(labeled_array, return_counts='true')
-    Nvoxels = np.asarray(Nvoxels).T
+    Uni, Nvoxels = np.unique(labeled_array, return_counts='true')
     #get rid of the 0 count (these aren't avalanches)
     Nvoxels = Nvoxels[1:]
     
