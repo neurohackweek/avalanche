@@ -24,5 +24,5 @@ His original code can be found [here](https://github.com/roijo/C-PAC_complexityt
 
 ### Test Data
 To test our code during Neurohackweek, in addition to simulated data with known avalanches, we also used openly shared preprocessed fMRI data from [OpenNeuro](https://openneuro.org/):
-- Dataset (associated with [this paper](http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0107145), but the acquisition is described [here](http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0069224))
+- [Dataset](https://openfmri.org/dataset/ds000133/) (associated with [this paper](http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0107145), but the acquisition is described [here](http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0069224))
 - [Analysis](https://openneuro.org/datasets/ds001032/versions/00001?app=FMRIPREP&version=13&job=bbfe5cc0-e49b-47fe-bd85-442c790a155c)
