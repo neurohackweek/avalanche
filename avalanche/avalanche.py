@@ -16,7 +16,7 @@ from nilearn.masking import apply_mask
 from nilearn.masking import unmask
 from scipy.ndimage.morphology import generate_binary_structure
 
-def avalanche(func_filename):
+def avalanche(func_filename, th, structure_dim):
     #need to get func_filename (a nii file) as input
     img = nb.load(func_filename)
     #data = img.get_data()
@@ -30,7 +30,6 @@ def avalanche(func_filename):
 #    plot_roi(mask_img)
     
     signal = zscore(masked_data, axis=0)
-    
     signal[signal<2]=0
     signal[signal>2]=1
     #nans are getting added to cluster 1 by label function, so set to 0
@@ -41,8 +40,8 @@ def avalanche(func_filename):
     
     #This is the avalanche identification step, which requires a 
     #structure to define the spatio(x-y-z)-temporal connectivity:
-    struct_44 = generate_binary_structure(4,4)
-    labeled_array, num_features = label(signal, struct_44)
+    struct = generate_binary_structure(structure_dim, structure_dim)
+    labeled_array, num_features = label(signal, struct)
     
     #get the size of the array:
     (n_x, n_y, n_z, n_t) = labeled_array.shape
