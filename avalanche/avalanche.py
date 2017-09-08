@@ -103,7 +103,7 @@ def avalanche(func_filename, th, structure_dim):
     #the onset array is back in the same time order and number of time points
     #as the original arrays...
     
-    img_new = nb.Nifti1Image(onset_array, header=img.header, affine=img.affine
+    img_new = nb.Nifti1Image(onset_array, header=img.header, affine=img.affine)
     # Reconstruct the 4D volume
     pp_file = os.path.join(os.getcwd(), 'binary_pp.nii.gz')
     img_new.to_filename(pp_file)
