@@ -19,7 +19,7 @@ from scipy.ndimage.morphology import generate_binary_structure
 def avalanche(func_filename):
     #need to get func_filename (a nii file) as input
     img = nb.load(func_filename)
-    data = img.get_data()
+    #data = img.get_data()
     
     #we need to make a mask, otherwise avalanches could happen outside the brain!
     mask_img = compute_epi_mask(func_filename)
@@ -84,6 +84,22 @@ def avalanche(func_filename):
     labeled_array, num_features = label(labeled_array, struct_44)
     
     img_new = nb.Nifti1Image(labeled_array, header=img.header, affine=img.affine)
+    
+    masked_label = apply_mask(img_new, mask_img)
+    #initialize matrix to count uniques:
+    uMat = np.zeros(shape=(num_features, n_t))
+    
+    #loop through each time point and identify cluster members:
+    for i in range(n_t):
+        #determine uniques at this time point:
+        inds = np.unique(masked_label[i,:])
+        #Note: 0 will always be a unique value, and we don't
+        #actually care about zeros, so ignore them:
+        uMat[(inds[1:].astype('int')-1),i] = 1
+        
+    #save number of active avalanches per time point:
+    ava_t = np.sum(uMat,axis=0)
+    
     # Reconstruct the 4D volume
     ava_file = os.path.join(os.getcwd(), 'avalancheLabels.nii.gz')
     img_new.to_filename(ava_file)
@@ -104,7 +120,7 @@ def avalanche(func_filename):
     #the onset array is back in the same time order and number of time points
     #as the original arrays...
     
-    img_new = nb.Nifti1Image(onset_array, header=img.header, affine=img.affine
+    img_new = nb.Nifti1Image(onset_array, header=img.header, affine=img.affine)
     # Reconstruct the 4D volume
     pp_file = os.path.join(os.getcwd(), 'binary_pp.nii.gz')
     img_new.to_filename(pp_file)
@@ -113,5 +129,5 @@ def avalanche(func_filename):
     #get rid of the 0 count (these aren't avalanches)
     Nvoxels = Nvoxels[1:]
     
-    #could return num_features, Nvoxels
+    #could return num_features, Nvoxels, ava_t
     
